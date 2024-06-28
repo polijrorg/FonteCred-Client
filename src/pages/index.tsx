@@ -1,8 +1,8 @@
 import { NextPage } from 'next';
-import FeedTemplate from 'template/Feed';
+import Home from 'template/Home';
 
-const Home: NextPage = () => {
-    return <FeedTemplate />;
+const HomePage: NextPage = () => {
+    return <Home />;
 };
 
-export default Home;
+export default HomePage;
