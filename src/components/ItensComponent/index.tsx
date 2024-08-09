@@ -2,12 +2,13 @@ import * as S from './styles';
 
 interface Props {
     children: React.ReactNode;
+    Title: string;
 }
 
-export const ItensComponent: React.FC<Props> = ({ children }) => {
+export const ItensComponent: React.FC<Props> = ({ children, Title }) => {
     return (
         <S.Wrapper>
-            <S.Text>Favoritos</S.Text>
+            <S.Text>{Title}</S.Text>
             {children}
         </S.Wrapper>
     );

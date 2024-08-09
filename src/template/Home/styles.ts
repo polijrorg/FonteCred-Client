@@ -106,6 +106,7 @@ export const RulesButton = styled.div`
 
 export const InfoBigWrapper = styled.div`
     height: 420px;
+    gap: 30px;
     width: 1144px;
     margin-left: 2px;
     margin-top: 15px;
@@ -128,4 +129,9 @@ export const ExampleImg = styled.img`
 export const ExampleImg2 = styled.img`
     height: 420px;
     width: 1144px;
+`;
+
+export const Banner = styled.img`
+    height: 418px;
+    width: 356px;
 `;
