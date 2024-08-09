@@ -1,5 +1,7 @@
 import Header from 'components/Header';
 import Sidebar from 'components/Sidebar';
+import ItensComponent from 'components/ItensComponent';
+import FavoriteItem from 'components/FavoriteItem';
 import * as S from './styles';
 
 const HomeTemplate = () => {
@@ -16,7 +18,11 @@ const HomeTemplate = () => {
                     <S.ExampleImg src="assets/images/exemplo.svg" />
                     <S.ExampleImg src="assets/images/exemplo2.png" />
                     <S.InfoBigWrapper>
-                        <S.ExampleImg2 src="assets/images/exemplo3.png" />
+                        <ItensComponent>
+                            <FavoriteItem name="capacete" />
+                            <FavoriteItem name="capacete" />
+                            <FavoriteItem name="capacete" />
+                        </ItensComponent>
                     </S.InfoBigWrapper>
                 </S.Background>
             </S.Wrapper>
