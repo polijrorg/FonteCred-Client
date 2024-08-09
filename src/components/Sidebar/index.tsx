@@ -31,6 +31,12 @@ const Sidebar: React.FC = () => {
                     Regras de pontuação
                 </S.PageTitle>
             </S.MniWrapper>
+            <S.MniWrapper onClick={() => handleNavigation('Awards')}>
+                <S.Symbol src="assets/icons/gift.png" />
+                <S.PageTitle isActive={activePage === 'Awards'}>
+                    Prêmios
+                </S.PageTitle>
+            </S.MniWrapper>
         </S.Wrapper>
     );
 };
