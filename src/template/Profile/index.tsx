@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import Header from 'components/Header';
 import Sidebar from 'components/Sidebar';
 import ItensComponent from 'components/ItensComponent';
@@ -8,6 +9,7 @@ import EditNumberForm from 'components/EditPhoneForm';
 import EditEmailForm from 'components/EditEmailForm';
 import EditNameForm from 'components/EditNameForm';
 import ReedemedComponent from 'components/ReedemedComponent';
+import ExtrTableComponent from 'components/ExtrTable';
 import * as S from './styles';
 
 interface Address {
@@ -40,6 +42,7 @@ interface PersonalData {
     email: Email;
     number: PhoneNumber;
     address: Address;
+    pts: string;
 }
 
 const ProfileTemplate: React.FC = () => {
@@ -64,13 +67,15 @@ const ProfileTemplate: React.FC = () => {
             state: 'SP',
             zip: '00000-000',
             complement: 'Apartamento D'
-        }
+        },
+        pts: '5pts'
     });
 
     const [showEditAddress, setShowEditAddress] = useState(false);
     const [showEditNumber, setShowEditNumber] = useState(false);
     const [showEditEmail, setShowEditEmail] = useState(false);
     const [showEditName, setShowEditName] = useState(false);
+    const [showExtrTable, setExtrTable] = useState(false);
 
     const handleSaveAddress = (newAddress: Address) => {
         setPersonalData({ ...personalData, address: newAddress });
@@ -92,6 +97,10 @@ const ProfileTemplate: React.FC = () => {
         setShowEditName(false);
     };
 
+    const handleCloseTable = () => {
+        setExtrTable(false);
+    };
+
     return (
         <S.Container>
             <Header />
@@ -100,13 +109,24 @@ const ProfileTemplate: React.FC = () => {
                 <S.Background>
                     <S.SubtitleDiv>
                         <S.Subtitle>Meu Perfil</S.Subtitle>
+                        <S.ExtrDiv>
+                            <S.Subtitle>Saldo</S.Subtitle>
+                            <S.PtsDiv>{personalData.pts}</S.PtsDiv>
+                            <S.ExtrButton
+                                onClick={() => setExtrTable(!showExtrTable)}
+                            >
+                                EXTRATO DE PONTOS
+                            </S.ExtrButton>
+                        </S.ExtrDiv>
                     </S.SubtitleDiv>
                     <S.ExampleImg src="assets/images/exemplo.svg" />
                     <S.ExampleImg src="assets/images/missoes.png" />
-                    {showEditAddress ||
-                    showEditNumber ||
-                    showEditEmail ||
-                    showEditName ? (
+                    {showExtrTable ? (
+                        <ExtrTableComponent Close={handleCloseTable} />
+                    ) : showEditAddress ||
+                      showEditNumber ||
+                      showEditEmail ||
+                      showEditName ? (
                         <S.InfoBigWrapper>
                             {showEditAddress && (
                                 <EditAddressForm
@@ -140,36 +160,38 @@ const ProfileTemplate: React.FC = () => {
                             </ItensComponent>
                         </S.InfoBigWrapper>
                     ) : (
-                        <S.InfoBigWrapper>
-                            <ItensComponent Title="Dados Pessoais">
-                                <ProfileInfo
-                                    name="Nome Completo"
-                                    info={personalData.name.name}
-                                    onClick={() => setShowEditName(true)}
-                                />
-                                <ProfileInfo
-                                    name="Email"
-                                    info={personalData.email.email}
-                                    onClick={() => setShowEditEmail(true)}
-                                />
-                                <ProfileInfo
-                                    name="Telefone"
-                                    info={personalData.number.number}
-                                    onClick={() => setShowEditNumber(true)}
-                                />
-                                <ProfileInfo
-                                    name="Endereço"
-                                    info={`${personalData.address.street}, ${personalData.address.number}`}
-                                    onClick={() => setShowEditAddress(true)}
-                                />
-                            </ItensComponent>
-                            <S.Banner src="assets/images/banner1.svg" />
-                            <ItensComponent Title="Prêmios Resgatados">
-                                <ReedemedComponent name="luvinhas" />
-                                <ReedemedComponent name="luvinhas" />
-                                <ReedemedComponent name="luvinhas" />
-                            </ItensComponent>
-                        </S.InfoBigWrapper>
+                        <>
+                            <S.InfoBigWrapper>
+                                <ItensComponent Title="Dados Pessoais">
+                                    <ProfileInfo
+                                        name="Nome Completo"
+                                        info={personalData.name.name}
+                                        onClick={() => setShowEditName(true)}
+                                    />
+                                    <ProfileInfo
+                                        name="Email"
+                                        info={personalData.email.email}
+                                        onClick={() => setShowEditEmail(true)}
+                                    />
+                                    <ProfileInfo
+                                        name="Telefone"
+                                        info={personalData.number.number}
+                                        onClick={() => setShowEditNumber(true)}
+                                    />
+                                    <ProfileInfo
+                                        name="Endereço"
+                                        info={`${personalData.address.street}, ${personalData.address.number}`}
+                                        onClick={() => setShowEditAddress(true)}
+                                    />
+                                </ItensComponent>
+                                <S.Banner src="assets/images/banner1.svg" />
+                                <ItensComponent Title="Prêmios Resgatados">
+                                    <ReedemedComponent name="luvinhas" />
+                                    <ReedemedComponent name="luvinhas" />
+                                    <ReedemedComponent name="luvinhas" />
+                                </ItensComponent>
+                            </S.InfoBigWrapper>
+                        </>
                     )}
                 </S.Background>
             </S.Wrapper>

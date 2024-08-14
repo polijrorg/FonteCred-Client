@@ -84,7 +84,7 @@ export const ArrowButton = styled.button`
     }
 `;
 
-export const RulesButton = styled.div`
+export const ExtrButton = styled.div`
     height: 32px;
     width: 240px;
     display: flex;
@@ -93,13 +93,14 @@ export const RulesButton = styled.div`
     color: ${defaultTheme.colors.primary.main};
     font-family: Inter Bold;
     font-size: 14px;
+    margin-left: 30px;
 
     border-radius: 8px;
     border: 1px solid ${defaultTheme.colors.primary.main};
 
     :hover {
         transition: 100ms;
-        scale: 1.1;
+        scale: 1.05;
         cursor: pointer;
     }
 `;
@@ -147,4 +148,25 @@ export const ExampleImg2 = styled.img`
 export const Banner = styled.img`
     height: 418px;
     width: 356px;
+`;
+
+export const ExtrDiv = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+`;
+
+export const PtsDiv = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: ${defaultTheme.colors.secondary.light5};
+    color: ${defaultTheme.colors.primary.main};
+    font-size: 16px;
+    padding: 2px;
+    border-radius: 16px;
+    height: 32px;
+    margin-left: 10px;
+    font-family: Inter Bold;
 `;
