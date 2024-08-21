@@ -12,8 +12,8 @@ const Sidebar: React.FC = () => {
             window.location.href = 'http://localhost:3000/ClientList';
         } else if (page === 'Awards') {
             window.location.href = 'http://localhost:3000/Awards';
-        } else if (page === 'ClientInfo') {
-            window.location.href = 'http://localhost:3000/ClientInfo';
+        } else if (page === 'Profile') {
+            window.location.href = 'http://localhost:3000/Profile';
         } else if (page === 'Rules') {
             window.location.href = 'http://localhost:3000/Rules';
         }
@@ -35,6 +35,12 @@ const Sidebar: React.FC = () => {
                 <S.Symbol src="assets/icons/gift.png" />
                 <S.PageTitle isActive={activePage === 'Awards'}>
                     Prêmios
+                </S.PageTitle>
+            </S.MniWrapper>
+            <S.MniWrapper onClick={() => handleNavigation('Profile')}>
+                <S.Symbol src="assets/icons/gift.png" />
+                <S.PageTitle isActive={activePage === 'Profile'}>
+                    Meu Perfil
                 </S.PageTitle>
             </S.MniWrapper>
         </S.Wrapper>

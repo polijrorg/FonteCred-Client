@@ -10,7 +10,9 @@ export const defaultTheme = {
         secondary: {
             light: '#51504B',
             light2: '#D9D9D9',
-            light3: '#F6F6F6'
+            light3: '#F6F6F6',
+            light4: '#E8E8E84D',
+            light5: '#D9D9D9'
         },
 
         white: '#FFFFFF',
