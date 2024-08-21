@@ -1,9 +1,16 @@
 import styled from 'styled-components';
+import { defaultTheme } from 'styles';
 
 export const ListWrapper = styled.div`
-    border-radius: 5px;
-    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+`;
+
+export const EmptyMessage = styled.div`
     width: 100%;
-    background-color: #fff;
-    overflow: hidden;
+    text-align: center;
+    font-size: 18px;
+    color: ${defaultTheme.colors.black};
+    padding: 20px;
 `;

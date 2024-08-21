@@ -5,6 +5,7 @@ import * as S from './styles';
 interface ExpandableListItemProps {
     title: string;
     content: string;
+    id: string;
 }
 
 const ExpandableListItem: React.FC<ExpandableListItemProps> = ({
