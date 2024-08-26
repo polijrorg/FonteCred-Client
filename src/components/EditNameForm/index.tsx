@@ -19,7 +19,9 @@ const EditNameForm: React.FC<Props> = ({ onSave, currentName }) => {
             setName({ ...name, [field]: event.target.value });
         };
 
-    const handleSave = () => {
+    const handleSave = (event: React.FormEvent) => {
+        event.preventDefault();
+
         onSave(name);
     };
 
