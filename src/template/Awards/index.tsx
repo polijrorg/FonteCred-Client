@@ -1,34 +1,43 @@
 import Header from 'components/Header';
 import Sidebar from 'components/Sidebar';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ItemCard from 'components/ItemCard';
 import Searchbar from 'components/Searchbar';
+import AwardsService, { Award } from 'services/AwardsService';
 import * as S from './styles';
 
-interface Item {
-    id: string;
-    name: string;
-    points: number;
-}
-
-const items: Item[] = [
-    { id: '1', name: 'Capacete branco', points: 500 },
-    { id: '2', name: 'Luva', points: 250 },
-    { id: '3', name: 'Capacete preto', points: 500 },
-    { id: '4', name: 'Chaveiro', points: 150 }
-];
-
 const AwardsTemplate: React.FC = () => {
+    const [items, setItems] = useState<Award[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const [, setSelectedItem] = useState<Item | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-    const filteredItems = items.filter((item) =>
-        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    useEffect(() => {
+        const fetchAwards = async () => {
+            try {
+                const data = await AwardsService.getAwards();
+                setItems(data);
+            } catch (err) {
+                setError('Erro ao carregar os prêmios');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchAwards();
+    }, []);
+
+    const filteredItems = items.filter((data) =>
+        data.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    const handleEditClick = (item: Item) => {
-        setSelectedItem(item);
-    };
+    if (loading) {
+        return <div>Carregando...</div>;
+    }
+
+    if (error) {
+        return <div>{error}</div>;
+    }
 
     return (
         <S.Container>
@@ -45,12 +54,8 @@ const AwardsTemplate: React.FC = () => {
                         <Searchbar onSearch={setSearchQuery} />
                     </S.SubtitleDiv>
                     <S.Grid>
-                        {filteredItems.map((item) => (
-                            <ItemCard
-                                key={item.id}
-                                item={item}
-                                onEditClick={handleEditClick}
-                            />
+                        {filteredItems.map((data) => (
+                            <ItemCard key={data.id} item={data} />
                         ))}
                     </S.Grid>
                 </S.Background>

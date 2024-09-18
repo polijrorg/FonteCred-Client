@@ -20,7 +20,9 @@ const EditEmailForm: React.FC<Props> = ({ onSave, currentEmail }) => {
             setEmail({ ...email, [field]: event.target.value });
         };
 
-    const handleSave = () => {
+    const handleSave = (event: React.FormEvent) => {
+        event.preventDefault(); // Previne o comportamento padrão do botão
+
         onSave(email);
     };
 
