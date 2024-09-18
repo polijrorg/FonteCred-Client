@@ -153,12 +153,10 @@ const ProfileTemplate: React.FC = () => {
                     <S.SubtitleDiv>
                         <S.Subtitle>Meu Perfil</S.Subtitle>
                         <S.ExtrDiv>
-                            <S.Subtitle>Saldo</S.Subtitle>
-                            <S.PtsDiv>{personalData?.points}</S.PtsDiv>
                             <S.ExtrButton
                                 onClick={() => setExtrTable(!showExtrTable)}
                             >
-                                EXTRATO DE PONTOS
+                                EXTRATO
                             </S.ExtrButton>
                         </S.ExtrDiv>
                     </S.SubtitleDiv>
