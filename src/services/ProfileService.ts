@@ -15,6 +15,7 @@ export interface PersonalData {
         complemento?: string;
     };
     points: string;
+    avatar: number; // Adicionando o avatar aqui
 }
 
 export async function fetchPersonalData(): Promise<PersonalData> {
@@ -36,7 +37,8 @@ export async function fetchPersonalData(): Promise<PersonalData> {
                 cep: data.cep,
                 complemento: data.complemento || ''
             },
-            points: `${data.points || 0} pts`
+            points: `${data.points || 0} pts`,
+            avatar: data.avatar // Pegando o valor do avatar da resposta
         };
 
         return personalData;

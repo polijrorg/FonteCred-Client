@@ -14,6 +14,27 @@ export const Wrapper = styled.div`
     border-radius: 5px;
 `;
 
+export const ExtrButton = styled.div`
+    height: 32px;
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: ${defaultTheme.colors.primary.main};
+    font-family: Inter Bold;
+    font-size: 14px;
+    margin-left: 30px;
+
+    border-radius: 8px;
+    border: 1px solid ${defaultTheme.colors.primary.main};
+
+    :hover {
+        transition: 100ms;
+        scale: 1.05;
+        cursor: pointer;
+    }
+`;
+
 export const WrapperAllData = styled.div`
     width: 80%;
     margin-top: 10px;

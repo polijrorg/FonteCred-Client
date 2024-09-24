@@ -12,14 +12,15 @@ export interface UpdateProfileData {
     bairro?: string;
     uf?: string;
     cidade?: string;
-    avatar?: string;
+    avatar?: number; // Definindo como number
 }
 
 export async function updateProfile(data: UpdateProfileData): Promise<void> {
     try {
+        // Enviando a requisição PATCH com o valor numérico
         await api.patch('/clients/update', data);
     } catch (error) {
-        console.log('Erro ao atualizar dados pessoais', error);
+        console.error('Erro ao atualizar dados pessoais', error);
         throw error;
     }
 }
