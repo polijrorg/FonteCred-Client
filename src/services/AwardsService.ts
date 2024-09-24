@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios';
 import api from './api';
 
 export interface Award {
-    id: string;
+    code: string;
     name: string;
     percentage: number;
 }
