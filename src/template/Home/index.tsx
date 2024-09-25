@@ -8,7 +8,12 @@ import { useEffect, useState } from 'react';
 import { fetchPersonalData, Prize } from 'services/ProfileService';
 import * as S from './styles';
 
+const handleClick = () => {
+    window.location.href = 'http://localhost:3000/Rules';
+};
+
 const HomeTemplate = () => {
+    const [loading, setLoading] = useState(true);
     const [notRedeemedPrizes, setNotRedeemedPrizes] = useState<Prize[]>([]);
 
     useEffect(() => {
@@ -18,10 +23,16 @@ const HomeTemplate = () => {
                 setNotRedeemedPrizes(data.notRedeemedPrizes);
             } catch (error) {
                 console.error('Erro ao carregar prêmios a resgatar', error);
+            } finally {
+                setLoading(false);
             }
         };
         loadPersonalData();
     }, []);
+
+    if (loading) {
+        return <div>Carregando...</div>;
+    }
     return (
         <S.Container>
             <Header />
@@ -30,7 +41,9 @@ const HomeTemplate = () => {
                 <S.Background>
                     <S.SubtitleDiv>
                         <S.Subtitle>Bem vindo de volta, Fonte Cred!</S.Subtitle>
-                        <S.RulesButton>VER REGRAS DE PONTUAÇÃO</S.RulesButton>
+                        <S.RulesButton onClick={handleClick}>
+                            VER REGRAS DE PONTUAÇÃO
+                        </S.RulesButton>
                     </S.SubtitleDiv>
                     <ProfielProgressCard />
                     <S.ExampleImg src="assets/images/exemplo2.png" />

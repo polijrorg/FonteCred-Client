@@ -23,7 +23,7 @@ export const Wrapper = styled.div`
 
 export const Background = styled.div`
     width: 90%;
-    background-color: ${defaultTheme.colors.primary.dark2};
+    background-color: ${defaultTheme.colors.secondary.light2};
     padding: 20px;
     margin-top: 20px;
 `;
@@ -39,29 +39,27 @@ export const SubtitleDiv = styled.div`
 export const Subtitle = styled.text`
     font-family: Inter Light;
     font-size: 24px;
-    color: ${defaultTheme.colors.white};
+    color: ${defaultTheme.colors.black};
 `;
 
 export const Table = styled.table`
-    margin-top: 20px;
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
-    background-color: ${defaultTheme.colors.primary.dark};
+    background-color: ${defaultTheme.colors.white};
 `;
 
 export const Th = styled.th`
     font-size: 12px;
     padding: 8px;
     text-align: left;
-    color: ${defaultTheme.colors.white};
+    color: ${defaultTheme.colors.black};
 `;
 
 export const Td = styled.td`
     font-size: 12px;
     padding: 8px;
     text-align: left;
-    color: ${defaultTheme.colors.white};
+    color: ${defaultTheme.colors.black};
 `;
 
 export const Tr = styled.tr`
