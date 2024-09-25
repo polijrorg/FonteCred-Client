@@ -9,7 +9,7 @@ import { fetchPersonalData, Prize } from 'services/ProfileService';
 import * as S from './styles';
 
 const handleClick = () => {
-    window.location.href = 'http://localhost:3000/Rules';
+    window.location.href = 'http://localhost:3000/Awards';
 };
 
 const HomeTemplate = () => {
@@ -56,6 +56,7 @@ const HomeTemplate = () => {
                                         key={prize.prizeCode}
                                         name={prize.prizeName}
                                         imageUrl={prize.prizeImage}
+                                        button={handleClick}
                                     />
                                 ))
                             ) : (
