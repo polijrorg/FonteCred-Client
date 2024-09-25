@@ -22,9 +22,10 @@ export const Wrapper = styled.div`
 `;
 
 export const Background = styled.div`
-    width: 100%;
+    width: 90%;
     background-color: ${defaultTheme.colors.primary.dark2};
     padding: 20px;
+    margin-top: 20px;
 `;
 
 export const SubtitleDiv = styled.div`

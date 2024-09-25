@@ -26,7 +26,7 @@ const Sidebar: React.FC = () => {
                 <S.PageTitle isActive={activePage === 'Home'}>Home</S.PageTitle>
             </S.MniWrapper>
             <S.MniWrapper onClick={() => handleNavigation('Rules')}>
-                <S.Symbol src="assets/icons/PranchetaSymbol.svg" />
+                <S.Symbol src="assets/icons/regras.svg" />
                 <S.PageTitle isActive={activePage === 'Rules'}>
                     Regras de pontuação
                 </S.PageTitle>
@@ -38,7 +38,7 @@ const Sidebar: React.FC = () => {
                 </S.PageTitle>
             </S.MniWrapper>
             <S.MniWrapper onClick={() => handleNavigation('Profile')}>
-                <S.Symbol src="assets/icons/gift.png" />
+                <S.Symbol src="assets/icons/perfil.png" />
                 <S.PageTitle isActive={activePage === 'Profile'}>
                     Meu Perfil
                 </S.PageTitle>

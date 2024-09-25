@@ -17,6 +17,7 @@ const avatarImages = [
 ];
 
 export const ProfielProgressCardNoButton: React.FC = () => {
+    const [progression, setProgression] = useState(0);
     const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
     const [avatar, setAvatar] = useState(avatarImages[0]); // Definindo a imagem padrão como foto1
 
@@ -46,6 +47,7 @@ export const ProfielProgressCardNoButton: React.FC = () => {
             const data = await fetchPersonalData();
             const avatarValue = data.avatar !== undefined ? data.avatar : 0;
             setAvatar(avatarImages[avatarValue]); // Ajustando a imagem com base no valor do avatar
+            setProgression(data.progression);
         } catch (error) {
             console.error('Erro ao carregar dados do cliente', error);
         }
@@ -74,7 +76,7 @@ export const ProfielProgressCardNoButton: React.FC = () => {
                             EDITAR AVATAR DE PERFIL
                         </S.ExtrButton>
                     </S.WrapperWithButton>
-                    <ProgressBar percentage={50} />
+                    <ProgressBar percentage={progression} />
                 </S.WrapperAllData>
             </S.Wrapper>
             {isAvatarModalOpen && (

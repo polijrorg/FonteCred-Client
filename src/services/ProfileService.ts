@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable camelcase */
 /* eslint-disable no-console */
 import api from './api';
 
@@ -15,7 +17,29 @@ export interface PersonalData {
         complemento?: string;
     };
     points: string;
-    avatar: number; // Adicionando o avatar aqui
+    avatar: number;
+    redeemedPrizes: Prize[];
+    notRedeemedPrizes: Prize[]; // Adicionando os prêmios não resgatados
+    availablePrizes: any[]; // Adicionando availablePrizes aqui
+    progression: number;
+}
+
+export interface AvailablePrize {
+    prizeCode: string;
+    prizeVersion: number;
+    clientId: string;
+    available: boolean;
+    available_at: string;
+    redeemed: boolean;
+    redeemed_at: string | null;
+    prize: Prize;
+}
+
+export interface Prize {
+    prizeCode: string;
+    prizeName: string;
+    prizeImage: string;
+    percentage: number;
 }
 
 export async function fetchPersonalData(): Promise<PersonalData> {
@@ -23,6 +47,32 @@ export async function fetchPersonalData(): Promise<PersonalData> {
         const response = await api.get('/clients/specific');
         const { data } = response;
         console.log(data);
+
+        // Extraindo todos os prêmios disponíveis
+        const availablePrizes = data.availablePrizes || [];
+
+        // Separando os prêmios que foram resgatados e os que estão disponíveis para resgate
+        const redeemedPrizes = availablePrizes
+            .filter((prize: any) => prize.redeemed === true) // Apenas os que foram resgatados
+            .map((prize: any) => ({
+                prizeCode: prize.prize.code,
+                prizeName: prize.prize.name,
+                prizeImage:
+                    prize.prize.imageUrl || 'assets/icons/default-image.svg',
+                percentage: prize.prize.percentage, // Adicionando o atributo percentage
+                redeemed_at: prize.redeemed_at
+            }));
+
+        const notRedeemedPrizes = availablePrizes
+            .filter((prize: any) => prize.redeemed === false) // Apenas os que ainda não foram resgatados
+            .map((prize: any) => ({
+                prizeCode: prize.prize.code,
+                prizeName: prize.prize.name,
+                prizeImage:
+                    prize.prize.imageUrl || 'assets/icons/default-image.svg',
+                percentage: prize.prize.percentage, // Adicionando o atributo percentage
+                available_at: prize.available_at
+            }));
 
         const personalData: PersonalData = {
             name: data.name,
@@ -38,7 +88,11 @@ export async function fetchPersonalData(): Promise<PersonalData> {
                 complemento: data.complemento || ''
             },
             points: `${data.points || 0} pts`,
-            avatar: data.avatar // Pegando o valor do avatar da resposta
+            avatar: data.avatar,
+            redeemedPrizes,
+            notRedeemedPrizes, // Adicionando os prêmios não resgatados
+            availablePrizes, // Agora incluindo os availablePrizes
+            progression: data.progression
         };
 
         return personalData;
