@@ -12,7 +12,7 @@ import EditEmailForm from 'components/EditEmailForm';
 import EditNameForm from 'components/EditNameForm';
 import ReedemedComponent from 'components/ReedemedComponent';
 import ExtrTableComponent from 'components/ExtrTable';
-import { fetchPersonalData } from 'services/ProfileService';
+import { fetchPersonalData, Prize } from 'services/ProfileService';
 import { updateProfile } from 'services/UpdateProfileService';
 import ProfielProgressCardNoButton from 'components/ProfileProgressCardNoButton/ProfileProgressCard';
 import * as S from './styles';
@@ -42,12 +42,14 @@ const ProfileTemplate: React.FC = () => {
     const [showEditEmail, setShowEditEmail] = useState(false);
     const [showEditName, setShowEditName] = useState(false);
     const [showExtrTable, setExtrTable] = useState(false);
+    const [redeemedPrizes, setRedeemedPrizes] = useState<Prize[]>([]);
 
     useEffect(() => {
         const loadPersonalData = async () => {
             try {
                 const data = await fetchPersonalData();
                 setPersonalData(data);
+                setRedeemedPrizes(data.redeemedPrizes);
             } catch (error) {
                 setError('Erro ao carregar dados do cliente');
             } finally {
@@ -215,11 +217,6 @@ const ProfileTemplate: React.FC = () => {
                                 />
                             )}
                             <S.Banner src="assets/images/banner1.svg" />
-                            <ItensComponent Title="Prêmios a Resgatar">
-                                <ReedemedComponent name="luvinhas" />
-                                <ReedemedComponent name="luvinhas" />
-                                <ReedemedComponent name="luvinhas" />
-                            </ItensComponent>
                         </S.InfoBigWrapper>
                     ) : (
                         <>
@@ -252,9 +249,17 @@ const ProfileTemplate: React.FC = () => {
                                 </ItensComponent>
                                 <S.Banner src="assets/images/banner1.svg" />
                                 <ItensComponent Title="Prêmios Resgatados">
-                                    <ReedemedComponent name="luvinhas" />
-                                    <ReedemedComponent name="luvinhas" />
-                                    <ReedemedComponent name="luvinhas" />
+                                    {redeemedPrizes.length > 0 ? (
+                                        redeemedPrizes.map((prize) => (
+                                            <ReedemedComponent
+                                                key={prize.prizeCode}
+                                                name={prize.prizeName}
+                                                imageUrl={prize.prizeImage}
+                                            />
+                                        ))
+                                    ) : (
+                                        <p>Nenhum prêmio resgatado ainda.</p>
+                                    )}
                                 </ItensComponent>
                             </S.InfoBigWrapper>
                         </>
