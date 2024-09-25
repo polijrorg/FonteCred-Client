@@ -61,6 +61,7 @@ const RulesTemplate: React.FC = () => {
                             cellphone="(11) 97581-8262"
                             ouvidoria="ouvidoria@fontecred.com.br"
                         />
+                        <S.Qbutton>PESQUISA DE BRINDES</S.Qbutton>
                     </S.RightDiv>
                 </S.Background2>
             </S.Wrapper>
