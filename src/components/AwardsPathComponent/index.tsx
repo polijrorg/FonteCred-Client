@@ -14,8 +14,14 @@ const AwardsPathComponent: React.FC = () => {
             try {
                 const { nextPrizes, previousPrizes } =
                     await AwardsService.getNearbyPrizes();
-                setNextPrizes(nextPrizes);
-                setPreviousPrizes(previousPrizes);
+                const sortedNextPrizes = nextPrizes.sort(
+                    (a, b) => a.percentage - b.percentage
+                );
+                const sortedPreviousPrizes = previousPrizes.sort(
+                    (a, b) => a.percentage - b.percentage
+                );
+                setNextPrizes(sortedNextPrizes);
+                setPreviousPrizes(sortedPreviousPrizes);
             } catch (error) {
                 console.error('Erro ao carregar prêmios próximos:', error);
             }
