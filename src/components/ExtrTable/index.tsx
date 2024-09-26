@@ -26,14 +26,11 @@ const ExtrTableComponent: React.FC<Props> = ({ Close }) => {
         try {
             const data = await fetchPersonalData();
 
-            // Acessando todos os prêmios diretamente de availablePrizes
             const allPrizes = data.availablePrizes;
 
             const formattedTransactions = allPrizes.map((prize: any) => {
-                // Verificar se o prêmio específico foi resgatado
                 const isRedeemed = prize.redeemed === true;
 
-                // Validar e formatar a data para "dd/mm/aaaa" ou definir como 'Data Inválida' se não existir
                 const date = isRedeemed
                     ? prize.redeemed_at
                         ? new Date(prize.redeemed_at).toLocaleDateString(
@@ -44,13 +41,12 @@ const ExtrTableComponent: React.FC<Props> = ({ Close }) => {
                     ? new Date(prize.available_at).toLocaleDateString('pt-BR')
                     : 'Data Inválida';
 
-                // Ação definida com base no atributo redeemed
                 const action = isRedeemed ? 'Resgatado' : 'Disponível';
                 return {
                     date,
-                    description: prize.prize.name, // Acessando o nome corretamente
+                    description: prize.prize.name,
                     action,
-                    timePercentage: `${prize.prize.percentage}%` // Certifique-se de que o atributo percentage está corretamente preenchido
+                    timePercentage: `${prize.prize.percentage}%`
                 };
             });
 
