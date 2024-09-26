@@ -5,6 +5,7 @@
 import React, { useEffect, useState } from 'react';
 import ConfirmAddress from 'components/ConfirmAdressComponent';
 import CouponService from 'services/CouponService';
+import RedeemService from 'services/RedeemService';
 import * as S from './styles';
 
 interface ProductCardProps {
@@ -12,27 +13,84 @@ interface ProductCardProps {
         name: string;
         description: string;
         percentage: number;
-        sizes: string[];
-        colors?: string[];
+        sizes: { id: string; value: string; optionId: string }[]; // Atualizado para refletir o tipo correto
+        colors?: { id: string; value: string; optionId: string }[]; // Atualizado para refletir o tipo correto
         isCoupon: boolean;
         prizeCode: string;
-        imageUrl: string; // Adicionando a propriedade imageUrl
+        imageUrl: string;
     };
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-    const [selectedSize, setSelectedSize] = useState<string | null>(null);
-    const [selectedColor, setSelectedColor] = useState<string | null>(null);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [isCouponMode, setIsCouponMode] = useState(false);
     const [couponCode, setCouponCode] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
+    const [selectedSizeId, setSelectedSizeId] = useState<string | null>(null);
+    const [selectedColorId, setSelectedColorId] = useState<string | null>(null);
 
-    const handleRedeemClick = () => {
-        if (product.isCoupon) {
-            setIsCouponMode(true);
-        } else {
-            setShowConfirmModal(true);
+    const handleRedeemClick = async () => {
+        try {
+            const clientData = await CouponService.getClientData();
+            const userProgression = clientData.progression;
+
+            if (userProgression >= product.percentage) {
+                if (product.isCoupon) {
+                    await RedeemService.redeemPrize({
+                        prizeCode: product.prizeCode,
+                        prizeVersion: 0
+                    });
+                    setIsCouponMode(true);
+                } else {
+                    if (
+                        (product.sizes.length > 0 && !selectedSizeId) ||
+                        (product.colors &&
+                            product.colors.length > 0 &&
+                            !selectedColorId)
+                    ) {
+                        alert(
+                            'Por favor, selecione o tamanho e/ou a cor do produto antes de resgatar.'
+                        );
+                        return;
+                    }
+
+                    const selectedOptions = [];
+                    if (selectedSizeId) {
+                        selectedOptions.push({
+                            optionId:
+                                product.sizes.find(
+                                    (size) => size.id === selectedSizeId
+                                )?.optionId || '', // ID da opção do tamanho
+                            valueId: selectedSizeId
+                        });
+                    }
+                    if (selectedColorId) {
+                        selectedOptions.push({
+                            optionId:
+                                product.colors?.find(
+                                    (color) => color.id === selectedColorId
+                                )?.optionId || '', // ID da opção da cor
+                            valueId: selectedColorId
+                        });
+                    }
+
+                    await RedeemService.redeemPhysicalPrize({
+                        prizeCode: product.prizeCode,
+                        prizeVersion: 0,
+                        selectedOptions
+                    });
+
+                    alert('Produto resgatado com sucesso!');
+                    setShowConfirmModal(true);
+                }
+            } else {
+                alert(
+                    'Você não possui porcentagem suficiente para resgatar este produto. Tente novamente mais tarde.'
+                );
+            }
+        } catch (error) {
+            console.error('Erro ao tentar resgatar o produto:', error);
+            alert('Erro ao tentar resgatar o produto. Tente novamente.');
         }
     };
 
@@ -131,14 +189,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                         <S.SizeOptions>
                             {product.sizes.map((size) => (
                                 <S.SizeButton
-                                    key={size}
-                                    selected={selectedSize === size}
+                                    key={size.id}
+                                    selected={selectedSizeId === size.id}
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        setSelectedSize(size);
+                                        setSelectedSizeId(size.id);
                                     }}
                                 >
-                                    {size}
+                                    {size.value}
                                 </S.SizeButton>
                             ))}
                         </S.SizeOptions>
@@ -152,27 +210,30 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                         <S.ColorOptions>
                             {product.colors.map((color) => (
                                 <S.ColorButton
-                                    key={color}
-                                    selected={selectedColor === color}
+                                    key={color.id}
+                                    selected={selectedColorId === color.id}
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        setSelectedColor(color);
+                                        setSelectedColorId(color.id);
                                     }}
                                 >
-                                    {color}
+                                    {color.value}
                                 </S.ColorButton>
                             ))}
                         </S.ColorOptions>
                     </S.Colors>
                 )}
             </S.Content>
-            <S.RedeemButton onClick={handleRedeemClick}>
+            <S.RedeemButton onClick={() => setShowConfirmModal(true)}>
                 RESGATAR
             </S.RedeemButton>
             {showConfirmModal && (
                 <S.ModalBackdrop onClick={closeModal}>
                     <S.ModalContainer onClick={(e) => e.stopPropagation()}>
-                        <ConfirmAddress onClose={closeModal} />
+                        <ConfirmAddress
+                            onClose={closeModal}
+                            onConfirm={handleRedeemClick}
+                        />
                     </S.ModalContainer>
                 </S.ModalBackdrop>
             )}

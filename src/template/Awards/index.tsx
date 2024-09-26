@@ -19,8 +19,8 @@ const AwardsTemplate: React.FC = () => {
         name: string;
         description: string;
         percentage: number;
-        sizes: string[];
-        colors: string[];
+        sizes: { id: string; value: string; optionId: string }[]; // Ajustar o tipo aqui
+        colors: { id: string; value: string; optionId: string }[]; // Ajustar o tipo aqui
         isCoupon: boolean;
         prizeCode: string;
         imageUrl: string;
@@ -55,13 +55,27 @@ const AwardsTemplate: React.FC = () => {
                 awardData.options
                     .find((option) => option.title.toLowerCase() === 'tamanho')
                     ?.values.filter((value) => value.isAvailable)
-                    .map((value) => value.value) || [];
+                    .map((value) => ({
+                        id: value.id, // Adicionando o ID do tamanho
+                        value: value.value,
+                        optionId:
+                            awardData.options.find(
+                                (opt) => opt.title.toLowerCase() === 'tamanho'
+                            )?.id || '' // Recuperando o ID da opção de tamanho
+                    })) || [];
 
             const colors =
                 awardData.options
                     .find((option) => option.title.toLowerCase() === 'cor')
                     ?.values.filter((value) => value.isAvailable)
-                    .map((value) => value.value) || [];
+                    .map((value) => ({
+                        id: value.id, // Adicionando o ID da cor
+                        value: value.value,
+                        optionId:
+                            awardData.options.find(
+                                (opt) => opt.title.toLowerCase() === 'cor'
+                            )?.id || '' // Recuperando o ID da opção de cor
+                    })) || [];
 
             const mappedProduct = {
                 name: awardData.name,

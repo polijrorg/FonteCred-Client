@@ -2,6 +2,7 @@ import { AxiosResponse } from 'axios';
 import api from './api';
 
 export interface ClientData {
+    progression: number;
     availablePrizes: {
         prizeCode: string;
         couponCode: string | null;

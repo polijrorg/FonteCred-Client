@@ -1,13 +1,19 @@
+/* eslint-disable no-alert */
 /* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
 import { fetchPersonalData, PersonalData } from 'services/ProfileService';
-import * as S from './styles'; // Supondo que os estilos estão no arquivo styles
+import { updateProfile } from 'services/UpdateProfileService';
+import * as S from './styles';
 
 interface ConfirmAddressProps {
     onClose: () => void;
+    onConfirm: () => void; // Adicionar uma prop para confirmar o resgate
 }
 
-const ConfirmAddress: React.FC<ConfirmAddressProps> = ({ onClose }) => {
+const ConfirmAddress: React.FC<ConfirmAddressProps> = ({
+    onClose,
+    onConfirm
+}) => {
     const [personalData, setPersonalData] = useState<PersonalData | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -25,6 +31,69 @@ const ConfirmAddress: React.FC<ConfirmAddressProps> = ({ onClose }) => {
 
         fetchData();
     }, []);
+
+    const handleConfirm = async () => {
+        if (personalData) {
+            try {
+                const updatedData = {
+                    email: (
+                        document.querySelector(
+                            'input[placeholder="Email"]'
+                        ) as HTMLInputElement
+                    )?.value,
+                    cellphone: (
+                        document.querySelector(
+                            'input[placeholder="Telefone"]'
+                        ) as HTMLInputElement
+                    )?.value,
+                    endereco: (
+                        document.querySelector(
+                            'input[placeholder="Rua"]'
+                        ) as HTMLInputElement
+                    )?.value,
+                    numero: (
+                        document.querySelector(
+                            'input[placeholder="Número"]'
+                        ) as HTMLInputElement
+                    )?.value,
+                    bairro: (
+                        document.querySelector(
+                            'input[placeholder="Bairro"]'
+                        ) as HTMLInputElement
+                    )?.value,
+                    cidade: (
+                        document.querySelector(
+                            'input[placeholder="Cidade"]'
+                        ) as HTMLInputElement
+                    )?.value,
+                    uf: (
+                        document.querySelector(
+                            'input[placeholder="Estado"]'
+                        ) as HTMLInputElement
+                    )?.value,
+                    cep: (
+                        document.querySelector(
+                            'input[placeholder="CEP"]'
+                        ) as HTMLInputElement
+                    )?.value,
+                    complemento: (
+                        document.querySelector(
+                            'input[placeholder="Complemento"]'
+                        ) as HTMLInputElement
+                    )?.value
+                };
+
+                // Atualizar o perfil
+                await updateProfile(updatedData);
+
+                // Após a atualização, acione a função de resgate
+                onConfirm();
+            } catch (error) {
+                console.error('Erro ao atualizar o endereço', error);
+                alert('Erro ao atualizar o endereço. Tente novamente.');
+            }
+        }
+    };
 
     if (loading) {
         return <div>Carregando dados do cliente...</div>;
@@ -48,7 +117,7 @@ const ConfirmAddress: React.FC<ConfirmAddressProps> = ({ onClose }) => {
                 <S.Input
                     type="text"
                     placeholder="Telefone"
-                    defaultValue={personalData?.phoneNumber}
+                    defaultValue={personalData?.cellphone}
                 />
 
                 <S.Label>Rua</S.Label>
@@ -100,7 +169,7 @@ const ConfirmAddress: React.FC<ConfirmAddressProps> = ({ onClose }) => {
                     defaultValue={personalData?.endereco.complemento}
                 />
 
-                <S.ConfirmButton onClick={onClose}>
+                <S.ConfirmButton onClick={handleConfirm}>
                     Confirmar e Resgatar
                 </S.ConfirmButton>
             </S.Form>
