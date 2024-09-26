@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import React, { useState } from 'react';
 import * as S from './styles';
 
@@ -19,10 +20,12 @@ const EditNameForm: React.FC<Props> = ({ onSave, currentName }) => {
             setName({ ...name, [field]: event.target.value });
         };
 
-    const handleSave = (event: React.FormEvent) => {
-        event.preventDefault();
-
-        onSave(name);
+    const handleSave = () => {
+        if (name.name === name.confirmName) {
+            onSave(name);
+        } else {
+            alert('Os nomes não coincidem. Por favor, verifique.');
+        }
     };
 
     return (

@@ -6,7 +6,7 @@ import api from './api';
 export interface PersonalData {
     name: string;
     email: string;
-    phoneNumber: string;
+    cellphone: string;
     endereco: {
         rua: string;
         numero: string;
@@ -77,7 +77,7 @@ export async function fetchPersonalData(): Promise<PersonalData> {
         const personalData: PersonalData = {
             name: data.name,
             email: data.email,
-            phoneNumber: data.phoneNumber || '',
+            cellphone: data.cellphone || '',
             endereco: {
                 rua: data.endereco,
                 numero: data.numero,
