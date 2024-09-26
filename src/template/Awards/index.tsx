@@ -22,6 +22,7 @@ const AwardsTemplate: React.FC = () => {
         sizes: string[];
         colors: string[];
         isCoupon: boolean;
+        prizeCode: string;
     } | null>(null);
 
     useEffect(() => {
@@ -67,7 +68,8 @@ const AwardsTemplate: React.FC = () => {
                 percentage: awardData.percentage,
                 sizes,
                 colors,
-                isCoupon: awardData.isCoupon
+                isCoupon: awardData.isCoupon,
+                prizeCode: awardData.code // Adicionando o prizeCode aqui
             };
 
             setSelectedAward(mappedProduct);
@@ -131,7 +133,7 @@ const AwardsTemplate: React.FC = () => {
             </S.Wrapper>
             {selectedAward && (
                 <S.ModalBackdrop onClick={closeModal}>
-                    <ProductCard product={selectedAward} />{' '}
+                    <ProductCard product={selectedAward} />
                 </S.ModalBackdrop>
             )}
         </S.Container>

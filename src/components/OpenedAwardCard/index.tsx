@@ -1,5 +1,10 @@
-import React, { useState } from 'react';
+/* eslint-disable no-alert */
+/* eslint-disable no-shadow */
+/* eslint-disable no-nested-ternary */
+/* eslint-disable no-console */
+import React, { useEffect, useState } from 'react';
 import ConfirmAddress from 'components/ConfirmAdressComponent';
+import CouponService from 'services/CouponService';
 import * as S from './styles';
 
 interface ProductCardProps {
@@ -7,9 +12,10 @@ interface ProductCardProps {
         name: string;
         description: string;
         percentage: number;
-        sizes: string[]; // Tamanhos
-        colors?: string[]; // Cores
-        isCoupon: boolean; // Verificação se o item é um cupom
+        sizes: string[];
+        colors?: string[];
+        isCoupon: boolean;
+        prizeCode: string;
     };
 }
 
@@ -18,6 +24,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     const [selectedColor, setSelectedColor] = useState<string | null>(null);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [isCouponMode, setIsCouponMode] = useState(false); // Estado para alternar para o modo cupom
+    const [couponCode, setCouponCode] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
 
     const handleRedeemClick = () => {
         if (product.isCoupon) {
@@ -30,9 +38,37 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     const closeModal = () => {
         setShowConfirmModal(false);
         setIsCouponMode(false); // Reseta o estado do cupom ao fechar o modal
+        setCouponCode(null); // Limpa o cupom selecionado
     };
 
-    // Se o estado de cupom estiver ativado, renderiza o card de cupom
+    useEffect(() => {
+        const fetchCouponCode = async () => {
+            if (product.isCoupon) {
+                setLoading(true);
+                try {
+                    const clientData = await CouponService.getClientData();
+                    const prize = clientData.availablePrizes.find(
+                        (prize) => prize.prizeCode === product.prizeCode
+                    );
+
+                    if (prize && prize.couponCode) {
+                        setCouponCode(prize.couponCode);
+                    } else {
+                        console.error('Cupom não encontrado para o produto');
+                    }
+                } catch (error) {
+                    console.error('Erro ao buscar o cupom do cliente', error);
+                } finally {
+                    setLoading(false);
+                }
+            }
+        };
+
+        if (isCouponMode) {
+            fetchCouponCode();
+        }
+    }, [isCouponMode, product.isCoupon, product.prizeCode]);
+
     if (isCouponMode && product.isCoupon) {
         return (
             <S.CouponCard onClick={(e) => e.stopPropagation()}>
@@ -40,17 +76,34 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                     <S.CouponTitle>{product.name}</S.CouponTitle>
                 </S.CouponHeader>
                 <S.CouponDescription>{product.description}</S.CouponDescription>
-                <S.CouponCopySuccess>
-                    Código copiado com sucesso!
-                </S.CouponCopySuccess>
-                <S.CouponButton>
-                    Copiar e ir para o site do parceiro
+                {loading ? (
+                    <S.LoadingMessage>Carregando o cupom...</S.LoadingMessage>
+                ) : couponCode ? (
+                    <S.CouponCodeContainer>
+                        <S.CouponCopySuccess>{couponCode}</S.CouponCopySuccess>
+                        <S.CopyButton
+                            onClick={() => {
+                                navigator.clipboard.writeText(couponCode || '');
+                                alert('Cupom copiado com sucesso!');
+                            }}
+                        >
+                            Copiar
+                        </S.CopyButton>
+                    </S.CouponCodeContainer>
+                ) : (
+                    <S.ErrorMessage>Erro ao carregar o cupom</S.ErrorMessage>
+                )}
+                <S.CouponButton
+                    onClick={() =>
+                        navigator.clipboard.writeText(couponCode || '')
+                    }
+                >
+                    Ir para o site do parceiro
                 </S.CouponButton>
             </S.CouponCard>
         );
     }
 
-    // Caso não seja cupom ou o estado de cupom não esteja ativado, renderiza o layout padrão
     return (
         <S.Card onClick={(e) => e.stopPropagation()}>
             <S.ImageContainer>
@@ -114,11 +167,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             </S.RedeemButton>
             {showConfirmModal && (
                 <S.ModalBackdrop onClick={closeModal}>
-                    {' '}
-                    {/* Backdrop para escurecer o fundo */}
                     <S.ModalContainer onClick={(e) => e.stopPropagation()}>
-                        {' '}
-                        {/* O modal em si */}
                         <ConfirmAddress onClose={closeModal} />
                     </S.ModalContainer>
                 </S.ModalBackdrop>
