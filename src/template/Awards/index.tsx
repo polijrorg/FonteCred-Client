@@ -23,6 +23,7 @@ const AwardsTemplate: React.FC = () => {
         colors: string[];
         isCoupon: boolean;
         prizeCode: string;
+        imageUrl: string;
     } | null>(null);
 
     useEffect(() => {
@@ -69,7 +70,8 @@ const AwardsTemplate: React.FC = () => {
                 sizes,
                 colors,
                 isCoupon: awardData.isCoupon,
-                prizeCode: awardData.code // Adicionando o prizeCode aqui
+                prizeCode: awardData.code,
+                imageUrl: awardData.imageUrl
             };
 
             setSelectedAward(mappedProduct);

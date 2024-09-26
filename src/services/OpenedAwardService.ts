@@ -7,6 +7,7 @@ export interface OpenedAward {
     description: string;
     percentage: number;
     isCoupon: boolean;
+    imageUrl: string;
     options: Array<{
         id: string;
         title: string;

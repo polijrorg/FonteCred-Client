@@ -16,6 +16,7 @@ interface ProductCardProps {
         colors?: string[];
         isCoupon: boolean;
         prizeCode: string;
+        imageUrl: string; // Adicionando a propriedade imageUrl
     };
 }
 
@@ -23,13 +24,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
     const [selectedColor, setSelectedColor] = useState<string | null>(null);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
-    const [isCouponMode, setIsCouponMode] = useState(false); // Estado para alternar para o modo cupom
+    const [isCouponMode, setIsCouponMode] = useState(false);
     const [couponCode, setCouponCode] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
     const handleRedeemClick = () => {
         if (product.isCoupon) {
-            setIsCouponMode(true); // Muda para o modo cupom
+            setIsCouponMode(true);
         } else {
             setShowConfirmModal(true);
         }
@@ -37,8 +38,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
     const closeModal = () => {
         setShowConfirmModal(false);
-        setIsCouponMode(false); // Reseta o estado do cupom ao fechar o modal
-        setCouponCode(null); // Limpa o cupom selecionado
+        setIsCouponMode(false);
+        setCouponCode(null);
     };
 
     useEffect(() => {
@@ -108,7 +109,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <S.Card onClick={(e) => e.stopPropagation()}>
             <S.ImageContainer>
                 <S.Image
-                    src="path/to/placeholder-image.png"
+                    src={
+                        product.imageUrl ||
+                        'assets/images/placeholder-image.png'
+                    }
                     alt="Imagem do Produto"
                 />
             </S.ImageContainer>
