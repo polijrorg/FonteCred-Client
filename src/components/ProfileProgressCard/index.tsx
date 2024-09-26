@@ -8,6 +8,10 @@ const handleClick = () => {
     window.location.href = 'http://localhost:3000/Profile';
 };
 
+const handleClick2 = () => {
+    window.location.href = 'http://localhost:3000/Awards';
+};
+
 const avatarImages = [
     'assets/icons/foto1.svg',
     'assets/icons/foto2.svg',
@@ -48,11 +52,16 @@ export const ProfielProgressCard: React.FC = () => {
                             prêmio!
                         </S.Text2>
                     </S.TextDiv>
-                    <S.SeeProfileButton onClick={handleClick}>
+                    <S.ProfileAndPathButton onClick={handleClick}>
                         VER PERFIL COMPLETO
-                    </S.SeeProfileButton>
+                    </S.ProfileAndPathButton>
                 </S.WrapperWithButton>
-                <ProgressBar percentage={progression} />
+                <S.ProgressBarContainer>
+                    <ProgressBar percentage={progression} />
+                    <S.ProfileAndPathButton onClick={handleClick2}>
+                        CAMINHO DE PRÊMIOS
+                    </S.ProfileAndPathButton>
+                </S.ProgressBarContainer>
             </S.WrapperAllData>
         </S.Wrapper>
     );

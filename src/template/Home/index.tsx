@@ -50,7 +50,6 @@ const HomeTemplate = () => {
                         </S.RulesButton>
                     </S.SubtitleDiv>
                     <ProfielProgressCard />
-                    <S.ExampleImg src="assets/images/exemplo2.png" />
                     <S.InfoBigWrapper>
                         <S.Banner src="assets/images/banner1.svg" />
                         <ItensComponent Title="Prêmios a Resgatar">

@@ -42,6 +42,10 @@ export const ProfielProgressCardNoButton: React.FC = () => {
         }
     };
 
+    const handleClick2 = () => {
+        window.location.href = 'http://localhost:3000/Awards';
+    };
+
     const loadPersonalData = async () => {
         try {
             const data = await fetchPersonalData();
@@ -76,7 +80,12 @@ export const ProfielProgressCardNoButton: React.FC = () => {
                             EDITAR AVATAR DE PERFIL
                         </S.ExtrButton>
                     </S.WrapperWithButton>
-                    <ProgressBar percentage={progression} />
+                    <S.ProgressBarContainer>
+                        <ProgressBar percentage={progression} />
+                        <S.ExtrButton onClick={handleClick2}>
+                            CAMINHO DE PRÊMIOS
+                        </S.ExtrButton>
+                    </S.ProgressBarContainer>
                 </S.WrapperAllData>
             </S.Wrapper>
             {isAvatarModalOpen && (
