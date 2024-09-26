@@ -17,6 +17,7 @@ const handleClick2 = () => {
 };
 
 const HomeTemplate = () => {
+    const [firtsName, setFirstName] = useState('');
     const [loading, setLoading] = useState(true);
     const [notRedeemedPrizes, setNotRedeemedPrizes] = useState<Prize[]>([]);
 
@@ -25,6 +26,7 @@ const HomeTemplate = () => {
             try {
                 const data = await fetchPersonalData();
                 setNotRedeemedPrizes(data.notRedeemedPrizes);
+                setFirstName(data.name.split(' ')[0]); // Atualiza o nome do cliente
             } catch (error) {
                 console.error('Erro ao carregar prêmios a resgatar', error);
             } finally {
@@ -44,7 +46,9 @@ const HomeTemplate = () => {
                 <Sidebar />
                 <S.Background>
                     <S.SubtitleDiv>
-                        <S.Subtitle>Bem vindo de volta, Fonte Cred!</S.Subtitle>
+                        <S.Subtitle>
+                            Bem vindo de volta, {firtsName}!
+                        </S.Subtitle>
                         <S.RulesButton onClick={handleClick}>
                             VER REGRAS DE PONTUAÇÃO
                         </S.RulesButton>

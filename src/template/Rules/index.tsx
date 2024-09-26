@@ -37,9 +37,7 @@ const RulesTemplate: React.FC = () => {
                 <S.Background2>
                     <S.Background>
                         <S.SubtitleDiv>
-                            <S.Subtitle>
-                                Bem vindo de volta, Fonte Cred!
-                            </S.Subtitle>
+                            <S.Subtitle>Regras de Pontuação</S.Subtitle>
                         </S.SubtitleDiv>
 
                         {loading ? (
