@@ -64,9 +64,14 @@ const ExtrTableComponent: React.FC<Props> = ({ Close }) => {
         loadTransactions();
     }, []);
 
-    const filteredTransactions = transactions.filter((item) =>
-        item.description.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const filteredTransactions = transactions
+        .filter((item) =>
+            item.description.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+        .sort(
+            (a, b) =>
+                parseFloat(b.timePercentage) - parseFloat(a.timePercentage)
+        );
 
     return (
         <S.Background>
