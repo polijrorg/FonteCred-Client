@@ -10,6 +10,7 @@ export interface Award {
 }
 
 export interface NearbyPrize {
+    name: string;
     prizeCode: string;
     prizeVersion: number;
     prizeImage: string | null;
