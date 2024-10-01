@@ -59,6 +59,7 @@ export const RightDiv = styled.div`
     display: flex;
     flex-direction: column;
     gap: 10px;
+    align-items: center;
 `;
 
 export const Banner2 = styled.img`
@@ -95,4 +96,24 @@ export const EmptyMessage = styled.div`
     font-size: 18px;
     color: ${defaultTheme.colors.black};
     padding: 20px;
+`;
+
+export const Qbutton = styled.div`
+    height: 32px;
+    width: 240px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: ${defaultTheme.colors.primary.main};
+    font-family: Inter Bold;
+    font-size: 14px;
+
+    border-radius: 8px;
+    border: 1px solid ${defaultTheme.colors.primary.main};
+
+    :hover {
+        transition: 100ms;
+        scale: 1.1;
+        cursor: pointer;
+    }
 `;

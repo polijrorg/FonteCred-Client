@@ -1,9 +1,10 @@
+/* eslint-disable no-alert */
 import React, { useState } from 'react';
 import * as S from './styles';
 
 interface PhoneNumber {
-    number: string;
-    confirmNumber: string;
+    cellphone: string;
+    confirmCellphone: string;
 }
 
 interface Props {
@@ -21,7 +22,13 @@ const EditNumberForm: React.FC<Props> = ({ onSave, currentNumber }) => {
         };
 
     const handleSave = () => {
-        onSave(number);
+        if (number.cellphone === number.confirmCellphone) {
+            onSave(number);
+        } else {
+            alert(
+                'Os números de telefone não coincidem. Por favor, verifique.'
+            );
+        }
     };
 
     return (
@@ -31,16 +38,16 @@ const EditNumberForm: React.FC<Props> = ({ onSave, currentNumber }) => {
                     Novo Telefone:
                     <S.Input
                         type="text"
-                        value={number.number}
-                        onChange={handleChange('number')}
+                        value={number.cellphone}
+                        onChange={handleChange('cellphone')}
                     />
                 </S.Label>
                 <S.Label>
                     Confirmar Telefone:
                     <S.Input
                         type="text"
-                        value={number.confirmNumber}
-                        onChange={handleChange('confirmNumber')}
+                        value={number.confirmCellphone}
+                        onChange={handleChange('confirmCellphone')}
                     />
                 </S.Label>
             </S.Form>

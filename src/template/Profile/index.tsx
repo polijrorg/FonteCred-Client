@@ -12,15 +12,16 @@ import EditEmailForm from 'components/EditEmailForm';
 import EditNameForm from 'components/EditNameForm';
 import ReedemedComponent from 'components/ReedemedComponent';
 import ExtrTableComponent from 'components/ExtrTable';
-import { fetchPersonalData } from 'services/ProfileService';
+import { fetchPersonalData, Prize } from 'services/ProfileService';
 import { updateProfile } from 'services/UpdateProfileService';
 import ProfielProgressCardNoButton from 'components/ProfileProgressCardNoButton/ProfileProgressCard';
+import EditNumberForm from 'components/EditPhoneForm';
 import * as S from './styles';
 
 export interface PersonalData {
     name: string;
     email: string;
-    phoneNumber: string;
+    cellphone: string;
     endereco: {
         rua: string;
         numero: string;
@@ -38,16 +39,18 @@ const ProfileTemplate: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [showEditAddress, setShowEditAddress] = useState(false);
-    const [showEditNumber] = useState(false);
+    const [showEditNumber, setShowEditNumber] = useState(false);
     const [showEditEmail, setShowEditEmail] = useState(false);
     const [showEditName, setShowEditName] = useState(false);
     const [showExtrTable, setExtrTable] = useState(false);
+    const [redeemedPrizes, setRedeemedPrizes] = useState<Prize[]>([]);
 
     useEffect(() => {
         const loadPersonalData = async () => {
             try {
                 const data = await fetchPersonalData();
                 setPersonalData(data);
+                setRedeemedPrizes(data.redeemedPrizes);
             } catch (error) {
                 setError('Erro ao carregar dados do cliente');
             } finally {
@@ -79,20 +82,25 @@ const ProfileTemplate: React.FC = () => {
         }
     };
 
-    // const handleSaveNumber = async (newNumber: string) => {
-    //     try {
-    //         await updateProfile({
-    //             telefone: newNumber
-    //         });
+    const handleSaveNumber = async (newNumber: {
+        cellphone: string;
+        confirmCellphone: string;
+    }) => {
+        try {
+            await updateProfile({
+                cellphone: newNumber.cellphone
+            });
 
-    //         setPersonalData((prevData) =>
-    //             prevData ? { ...prevData, phoneNumber: newNumber } : null
-    //         );
-    //         setShowEditNumber(false);
-    //     } catch (error) {
-    //         console.error('Erro ao salvar número de telefone', error);
-    //     }
-    // };
+            setPersonalData((prevData) =>
+                prevData
+                    ? { ...prevData, cellphone: newNumber.cellphone }
+                    : null
+            );
+            setShowEditNumber(false);
+        } catch (error) {
+            console.error('Erro ao salvar número de telefone', error);
+        }
+    };
 
     const handleSaveEmail = async (newEmail: {
         email: string;
@@ -188,14 +196,17 @@ const ProfileTemplate: React.FC = () => {
                                     }}
                                 />
                             )}
-                            {/* {showEditNumber && (
+                            {showEditNumber && (
                                 <EditNumberForm
                                     onSave={handleSaveNumber}
-                                    currentNumber={
-                                        personalData?.phoneNumber || ''
-                                    }
+                                    currentNumber={{
+                                        cellphone:
+                                            personalData?.cellphone || '',
+                                        confirmCellphone:
+                                            personalData?.cellphone || ''
+                                    }}
                                 />
-                            )} */}
+                            )}
                             {showEditEmail && (
                                 <EditEmailForm
                                     onSave={handleSaveEmail}
@@ -215,11 +226,6 @@ const ProfileTemplate: React.FC = () => {
                                 />
                             )}
                             <S.Banner src="assets/images/banner1.svg" />
-                            <ItensComponent Title="Prêmios a Resgatar">
-                                <ReedemedComponent name="luvinhas" />
-                                <ReedemedComponent name="luvinhas" />
-                                <ReedemedComponent name="luvinhas" />
-                            </ItensComponent>
                         </S.InfoBigWrapper>
                     ) : (
                         <>
@@ -235,11 +241,11 @@ const ProfileTemplate: React.FC = () => {
                                         info={personalData?.email || ''}
                                         onClick={() => setShowEditEmail(true)}
                                     />
-                                    {/* <ProfileInfo
+                                    <ProfileInfo
                                         name="Telefone"
-                                        info={personalData?.phoneNumber || ''}
+                                        info={personalData?.cellphone || ''}
                                         onClick={() => setShowEditNumber(true)}
-                                    /> */}
+                                    />
                                     <ProfileInfo
                                         name="Endereço"
                                         info={`${
@@ -252,9 +258,17 @@ const ProfileTemplate: React.FC = () => {
                                 </ItensComponent>
                                 <S.Banner src="assets/images/banner1.svg" />
                                 <ItensComponent Title="Prêmios Resgatados">
-                                    <ReedemedComponent name="luvinhas" />
-                                    <ReedemedComponent name="luvinhas" />
-                                    <ReedemedComponent name="luvinhas" />
+                                    {redeemedPrizes.length > 0 ? (
+                                        redeemedPrizes.map((prize) => (
+                                            <ReedemedComponent
+                                                key={prize.prizeCode}
+                                                name={prize.prizeName}
+                                                imageUrl={prize.prizeImage}
+                                            />
+                                        ))
+                                    ) : (
+                                        <p>Nenhum prêmio resgatado ainda.</p>
+                                    )}
                                 </ItensComponent>
                             </S.InfoBigWrapper>
                         </>

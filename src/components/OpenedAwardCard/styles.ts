@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { defaultTheme } from 'styles';
 
 export const Card = styled.div`
     display: flex;
@@ -105,7 +106,7 @@ export const SizeOptions = styled.div`
 `;
 
 export const CouponCard = styled.div`
-    width: 300px;
+    width: 350px;
     padding: 20px;
     background-color: #fff;
     border-radius: 10px;
@@ -183,4 +184,35 @@ export const ModalContainer = styled.div`
     align-items: center;
     width: 400px;
     max-width: 90vw;
+`;
+
+export const LoadingMessage = styled.text`
+    font-size: 18px;
+    color: ${defaultTheme.colors.primary.main};
+    padding: 20px;
+`;
+
+export const ErrorMessage = styled.text`
+    font-size: 18px;
+    padding: 20px;
+`;
+
+export const CouponCodeContainer = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Espaço entre o código e o botão */
+`;
+
+export const CopyButton = styled.button`
+    padding: 4px 8px;
+    background-color: #4caf50; /* Cor de fundo */
+    color: white; /* Cor do texto */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+        background-color: #45a049; /* Cor de fundo ao passar o mouse */
+    }
 `;

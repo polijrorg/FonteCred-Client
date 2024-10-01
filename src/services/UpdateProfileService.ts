@@ -6,18 +6,18 @@ export interface UpdateProfileData {
     email?: string;
     cpf?: string;
     cep?: string;
+    cellphone?: string;
     endereco?: string;
     numero?: string;
     complemento?: string;
     bairro?: string;
     uf?: string;
     cidade?: string;
-    avatar?: number; // Definindo como number
+    avatar?: number;
 }
 
 export async function updateProfile(data: UpdateProfileData): Promise<void> {
     try {
-        // Enviando a requisição PATCH com o valor numérico
         await api.patch('/clients/update', data);
     } catch (error) {
         console.error('Erro ao atualizar dados pessoais', error);

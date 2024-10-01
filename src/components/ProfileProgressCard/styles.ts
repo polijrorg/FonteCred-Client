@@ -64,7 +64,7 @@ export const EditIcon = styled.img`
     }
 `;
 
-export const SeeProfileButton = styled.div`
+export const ProfileAndPathButton = styled.div`
     height: 32px;
     width: 240px;
     display: flex;
@@ -82,4 +82,13 @@ export const SeeProfileButton = styled.div`
         scale: 1.1;
         cursor: pointer;
     }
+`;
+
+export const ProgressBarContainer = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 `;

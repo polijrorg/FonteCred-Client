@@ -3,14 +3,20 @@ import * as S from './styles';
 
 interface Props {
     name: string;
+    imageUrl: string;
+    button: () => void;
 }
 
-export const ReedemComponent: React.FC<Props> = ({ name }) => {
+export const ReedemComponent: React.FC<Props> = ({
+    name,
+    imageUrl,
+    button
+}) => {
     return (
         <S.Wrapper>
-            <S.Image src="assets/icons/circulocinza.svg" />
+            <S.Image src={imageUrl} alt={name} />
             <S.Text>{name}</S.Text>
-            <S.Button>Resgatar</S.Button>
+            <S.Button onClick={button}>Resgatar</S.Button>
         </S.Wrapper>
     );
 };

@@ -5,6 +5,18 @@ export interface Award {
     code: string;
     name: string;
     percentage: number;
+    imageUrl: string;
+    redeemed: boolean;
+}
+
+export interface NearbyPrize {
+    name: string;
+    prizeCode: string;
+    prizeVersion: number;
+    prizeImage: string | null;
+    percentage: number;
+    monthUntil?: number;
+    createdAt?: string;
 }
 
 export default class AwardsService {
@@ -22,6 +34,17 @@ export default class AwardsService {
                 order
             }
         });
+        return response.data;
+    }
+
+    static async getNearbyPrizes(): Promise<{
+        nextPrizes: NearbyPrize[];
+        previousPrizes: NearbyPrize[];
+    }> {
+        const response: AxiosResponse<{
+            nextPrizes: NearbyPrize[];
+            previousPrizes: NearbyPrize[];
+        }> = await api.get('/prizes/history/nearby');
         return response.data;
     }
 }

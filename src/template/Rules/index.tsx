@@ -37,9 +37,7 @@ const RulesTemplate: React.FC = () => {
                 <S.Background2>
                     <S.Background>
                         <S.SubtitleDiv>
-                            <S.Subtitle>
-                                Bem vindo de volta, Fonte Cred!
-                            </S.Subtitle>
+                            <S.Subtitle>Regras de Pontuação</S.Subtitle>
                         </S.SubtitleDiv>
 
                         {loading ? (
@@ -61,6 +59,7 @@ const RulesTemplate: React.FC = () => {
                             cellphone="(11) 97581-8262"
                             ouvidoria="ouvidoria@fontecred.com.br"
                         />
+                        <S.Qbutton>PESQUISA DE BRINDES</S.Qbutton>
                     </S.RightDiv>
                 </S.Background2>
             </S.Wrapper>

@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import React, { useState } from 'react';
 import * as S from './styles';
 
@@ -20,10 +21,12 @@ const EditEmailForm: React.FC<Props> = ({ onSave, currentEmail }) => {
             setEmail({ ...email, [field]: event.target.value });
         };
 
-    const handleSave = (event: React.FormEvent) => {
-        event.preventDefault(); // Previne o comportamento padrão do botão
-
-        onSave(email);
+    const handleSave = () => {
+        if (email.email === email.confirmEmail) {
+            onSave(email);
+        } else {
+            alert('Os emails não coincidem. Por favor, verifique.');
+        }
     };
 
     return (

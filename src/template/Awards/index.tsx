@@ -7,6 +7,7 @@ import Searchbar from 'components/Searchbar';
 import AwardsService, { Award } from 'services/AwardsService';
 import OpenedAwardService from 'services/OpenedAwardService';
 import ProductCard from 'components/OpenedAwardCard';
+import AwardsPathComponent from 'components/AwardsPathComponent';
 import * as S from './styles';
 
 const AwardsTemplate: React.FC = () => {
@@ -18,9 +19,11 @@ const AwardsTemplate: React.FC = () => {
         name: string;
         description: string;
         percentage: number;
-        sizes: string[];
-        colors: string[]; // Adicionamos as cores aqui
+        sizes: { id: string; value: string; optionId: string }[]; // Ajustar o tipo aqui
+        colors: { id: string; value: string; optionId: string }[]; // Ajustar o tipo aqui
         isCoupon: boolean;
+        prizeCode: string;
+        imageUrl: string;
     } | null>(null);
 
     useEffect(() => {
@@ -46,33 +49,46 @@ const AwardsTemplate: React.FC = () => {
 
         try {
             const awardData = await OpenedAwardService.getOpenedAwardById(code);
-            console.log('Award data:', awardData); // Verifica os dados recebidos
+            console.log('Award data:', awardData);
 
-            // Extrair os tamanhos do campo options
             const sizes =
                 awardData.options
                     .find((option) => option.title.toLowerCase() === 'tamanho')
                     ?.values.filter((value) => value.isAvailable)
-                    .map((value) => value.value) || [];
+                    .map((value) => ({
+                        id: value.id, // Adicionando o ID do tamanho
+                        value: value.value,
+                        optionId:
+                            awardData.options.find(
+                                (opt) => opt.title.toLowerCase() === 'tamanho'
+                            )?.id || '' // Recuperando o ID da opção de tamanho
+                    })) || [];
 
-            // Extrair as cores do campo options
             const colors =
                 awardData.options
                     .find((option) => option.title.toLowerCase() === 'cor')
                     ?.values.filter((value) => value.isAvailable)
-                    .map((value) => value.value) || [];
+                    .map((value) => ({
+                        id: value.id, // Adicionando o ID da cor
+                        value: value.value,
+                        optionId:
+                            awardData.options.find(
+                                (opt) => opt.title.toLowerCase() === 'cor'
+                            )?.id || '' // Recuperando o ID da opção de cor
+                    })) || [];
 
-            // Certifique-se de incluir o isCoupon
             const mappedProduct = {
                 name: awardData.name,
                 description: awardData.description,
                 percentage: awardData.percentage,
                 sizes,
                 colors,
-                isCoupon: awardData.isCoupon // Inclua isCoupon aqui
+                isCoupon: awardData.isCoupon,
+                prizeCode: awardData.code,
+                imageUrl: awardData.imageUrl
             };
 
-            setSelectedAward(mappedProduct); // Exibe o modal com os detalhes do prêmio
+            setSelectedAward(mappedProduct);
         } catch (err) {
             console.error('Erro ao carregar os detalhes do prêmio:', err);
             setError('Erro ao carregar os detalhes do prêmio');
@@ -80,12 +96,14 @@ const AwardsTemplate: React.FC = () => {
     };
 
     const closeModal = () => {
-        setSelectedAward(null); // Fecha o modal
+        setSelectedAward(null);
     };
 
-    const filteredItems = items.filter((data) =>
-        data.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const filteredItems = items
+        .filter((data) =>
+            data.name.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+        .sort((a, b) => a.percentage - b.percentage);
 
     if (loading) {
         return <div>Carregando...</div>;
@@ -104,24 +122,24 @@ const AwardsTemplate: React.FC = () => {
                     <S.SubtitleDiv>
                         <S.Subtitle>Caminho de Prêmios</S.Subtitle>
                     </S.SubtitleDiv>
-                    <S.ExampleImg src="assets/images/exemplo2.png" />
+                    <AwardsPathComponent />
                     <S.SubtitleDiv>
                         <S.Title>Todos os Prêmios</S.Title>
                         <Searchbar onSearch={setSearchQuery} />
                     </S.SubtitleDiv>
                     <S.Grid>
                         {filteredItems.map((data) => {
-                            console.log('Data inside map:', data); // Verifica se o 'code' está correto
+                            console.log('Data inside map:', data);
                             return (
                                 <ItemCard
-                                    key={data.code} // Usando 'code' como chave
+                                    key={data.code}
                                     item={data}
                                     onClick={() => {
                                         console.log(
                                             'Clicked item code:',
                                             data.code
-                                        ); // Verifica se o código está sendo passado corretamente
-                                        handleItemClick(data.code); // Passando 'code' para a função de clique
+                                        );
+                                        handleItemClick(data.code);
                                     }}
                                 />
                             );
@@ -129,9 +147,9 @@ const AwardsTemplate: React.FC = () => {
                     </S.Grid>
                 </S.Background>
             </S.Wrapper>
-            {selectedAward && ( // Modal com os detalhes do prêmio
+            {selectedAward && (
                 <S.ModalBackdrop onClick={closeModal}>
-                    <ProductCard product={selectedAward} />{' '}
+                    <ProductCard product={selectedAward} />
                 </S.ModalBackdrop>
             )}
         </S.Container>

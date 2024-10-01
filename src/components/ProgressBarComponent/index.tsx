@@ -6,12 +6,14 @@ interface ProgressBarProps {
 }
 
 const ProgressBar: React.FC<ProgressBarProps> = ({ percentage }) => {
+    const formattedPercentage = percentage.toFixed(2); // Formata para duas casas decimais
+
     return (
         <S.PrimaryDiv>
             <S.Container>
-                <S.BarFill style={{ width: `${percentage}%` }} />
+                <S.BarFill style={{ width: `${formattedPercentage}%` }} />
             </S.Container>
-            <S.Percentage>{percentage}</S.Percentage>
+            <S.Percentage>{formattedPercentage}</S.Percentage>
             <S.Symbol>%</S.Symbol>
         </S.PrimaryDiv>
     );
