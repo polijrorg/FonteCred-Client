@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 import * as S from './styles';
 
 const Sidebar: React.FC = () => {
     const [activePage, setActivePage] = useState<string>('Home');
+    const router = useRouter();
 
     const handleNavigation = (page: string) => {
         setActivePage(page);
         if (page === 'Home') {
-            window.location.href = 'http://localhost:3000';
+            router.push('/');
         } else if (page === 'Clientes') {
-            window.location.href = 'http://localhost:3000/ClientList';
+            router.push('/ClientList');
         } else if (page === 'Awards') {
-            window.location.href = 'http://localhost:3000/Awards';
+            router.push('/Awards');
         } else if (page === 'Profile') {
-            window.location.href = 'http://localhost:3000/Profile';
+            router.push('/Profile');
         } else if (page === 'Rules') {
-            window.location.href = 'http://localhost:3000/Rules';
+            router.push('/Rules');
         }
     };
 
