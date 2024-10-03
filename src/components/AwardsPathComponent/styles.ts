@@ -14,7 +14,7 @@ export const Path = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 80%;
+    width: 100%;
     position: relative;
     height: 100px;
 `;

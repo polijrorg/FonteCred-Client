@@ -7,6 +7,7 @@ export interface Award {
     percentage: number;
     imageUrl: string;
     redeemed: boolean;
+    isActive: boolean;
 }
 
 export interface NearbyPrize {
@@ -17,6 +18,13 @@ export interface NearbyPrize {
     percentage: number;
     monthUntil?: number;
     createdAt?: string;
+    active: boolean;
+    nextPrizes: {
+        active: boolean;
+    };
+    previousPrizes: {
+        active: boolean;
+    };
 }
 
 export default class AwardsService {

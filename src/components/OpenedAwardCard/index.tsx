@@ -36,6 +36,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
             if (userProgression >= product.percentage) {
                 if (product.isCoupon) {
+                    // Resgata o cupom diretamente sem abrir o modal de confirmação
                     await RedeemService.redeemPrize({
                         prizeCode: product.prizeCode,
                         prizeVersion: 0
@@ -224,7 +225,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                     </S.Colors>
                 )}
             </S.Content>
-            <S.RedeemButton onClick={() => setShowConfirmModal(true)}>
+            <S.RedeemButton
+                onClick={
+                    product.isCoupon
+                        ? handleRedeemClick
+                        : () => setShowConfirmModal(true)
+                }
+            >
                 RESGATAR
             </S.RedeemButton>
             {showConfirmModal && (

@@ -30,7 +30,9 @@ const AwardsTemplate: React.FC = () => {
         const fetchAwards = async () => {
             try {
                 const data = await AwardsService.getAwards();
-                setItems(data);
+                // Filtrar apenas os prêmios que possuem isActive true
+                const activeAwards = data.filter((award) => award.isActive);
+                setItems(activeAwards);
             } catch (err) {
                 setError('Erro ao carregar os prêmios');
             } finally {
