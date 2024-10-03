@@ -19,10 +19,11 @@ const AwardsTemplate: React.FC = () => {
         name: string;
         description: string;
         percentage: number;
-        sizes: { id: string; value: string; optionId: string }[]; // Ajustar o tipo aqui
-        colors: { id: string; value: string; optionId: string }[]; // Ajustar o tipo aqui
+        sizes: { id: string; value: string; optionId: string }[];
+        colors: { id: string; value: string; optionId: string }[];
         isCoupon: boolean;
         prizeCode: string;
+        prizeVersion: number;
         imageUrl: string;
     } | null>(null);
 
@@ -30,7 +31,6 @@ const AwardsTemplate: React.FC = () => {
         const fetchAwards = async () => {
             try {
                 const data = await AwardsService.getAwards();
-                // Filtrar apenas os prêmios que possuem isActive true
                 const activeAwards = data.filter((award) => award.isActive);
                 setItems(activeAwards);
             } catch (err) {
@@ -51,19 +51,20 @@ const AwardsTemplate: React.FC = () => {
 
         try {
             const awardData = await OpenedAwardService.getOpenedAwardById(code);
-            console.log('Award data:', awardData);
+            console.log('Award code:', awardData.code);
+            console.log('Award version:', awardData.version);
 
             const sizes =
                 awardData.options
                     .find((option) => option.title.toLowerCase() === 'tamanho')
                     ?.values.filter((value) => value.isAvailable)
                     .map((value) => ({
-                        id: value.id, // Adicionando o ID do tamanho
+                        id: value.id,
                         value: value.value,
                         optionId:
                             awardData.options.find(
                                 (opt) => opt.title.toLowerCase() === 'tamanho'
-                            )?.id || '' // Recuperando o ID da opção de tamanho
+                            )?.id || ''
                     })) || [];
 
             const colors =
@@ -71,12 +72,12 @@ const AwardsTemplate: React.FC = () => {
                     .find((option) => option.title.toLowerCase() === 'cor')
                     ?.values.filter((value) => value.isAvailable)
                     .map((value) => ({
-                        id: value.id, // Adicionando o ID da cor
+                        id: value.id,
                         value: value.value,
                         optionId:
                             awardData.options.find(
                                 (opt) => opt.title.toLowerCase() === 'cor'
-                            )?.id || '' // Recuperando o ID da opção de cor
+                            )?.id || ''
                     })) || [];
 
             const mappedProduct = {
@@ -87,6 +88,7 @@ const AwardsTemplate: React.FC = () => {
                 colors,
                 isCoupon: awardData.isCoupon,
                 prizeCode: awardData.code,
+                prizeVersion: awardData.version,
                 imageUrl: awardData.imageUrl
             };
 
