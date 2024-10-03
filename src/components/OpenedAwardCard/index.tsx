@@ -17,6 +17,7 @@ interface ProductCardProps {
         colors?: { id: string; value: string; optionId: string }[]; // Atualizado para refletir o tipo correto
         isCoupon: boolean;
         prizeCode: string;
+        prizeVersion: number;
         imageUrl: string;
     };
 }
@@ -36,10 +37,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
             if (userProgression >= product.percentage) {
                 if (product.isCoupon) {
-                    // Resgata o cupom diretamente sem abrir o modal de confirmação
                     await RedeemService.redeemPrize({
                         prizeCode: product.prizeCode,
-                        prizeVersion: 0
+                        prizeVersion: product.prizeVersion
                     });
                     setIsCouponMode(true);
                 } else {
@@ -61,7 +61,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                             optionId:
                                 product.sizes.find(
                                     (size) => size.id === selectedSizeId
-                                )?.optionId || '', // ID da opção do tamanho
+                                )?.optionId || '',
                             valueId: selectedSizeId
                         });
                     }
@@ -70,7 +70,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                             optionId:
                                 product.colors?.find(
                                     (color) => color.id === selectedColorId
-                                )?.optionId || '', // ID da opção da cor
+                                )?.optionId || '',
                             valueId: selectedColorId
                         });
                     }

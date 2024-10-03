@@ -3,6 +3,7 @@ import api from './api';
 
 export interface OpenedAward {
     code: string;
+    version: number;
     name: string;
     description: string;
     percentage: number;

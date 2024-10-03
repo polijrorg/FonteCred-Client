@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export function getApi() {
     const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3Mjc4MTMwMTIsImV4cCI6MTcyNzg5OTQxMiwic3ViIjoiNzQyMiJ9.cieA-I6QtQH1nIe7KDQQJiE0ZlVZSBAR6hyoImrypbI';
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3Mjc5NjUyNDksImV4cCI6MTcyODA1MTY0OSwic3ViIjoiNzQyMiJ9.IawrZfAfloJCqfqHIlMrVe-JnY1wvbHhyQgTKMsLpeQ';
     const api = axios.create({
         baseURL: 'https://fontecred.polijrinternal.com/'
     });
